@@ -1,10 +1,8 @@
 # Saker att fixa
 # Scrollande olika bakgrund
-# Fyrkanter ska vara bilar istället
 # En highscore lista
 # Bättre styrmechanics
 # Bensinmätare 
-# Blocken ska inte hamna på gräset och man ska inte kunna köra på gräset
 # bilar i motg[ende riktning
 import pygame, time, random
 
@@ -12,8 +10,8 @@ import pygame, time, random
 pygame.init()
 pygame.mixer.init()
 
-crash_sound = pygame.mixer.Sound("carcrash.wav")
-pygame.mixer.music.load("noticed.wav")
+crash_sound = pygame.mixer.Sound("Audio/carcrash.wav")
+pygame.mixer.music.load("Audio/noticed.wav")
 
 #Resolution
 display_width = 800
@@ -38,12 +36,12 @@ pygame.display.set_caption('s90.png')
 clock = pygame.time.Clock()
 
 #Bilder
-carImg = pygame.image.load('s90.png')
-Gata1 = pygame.image.load("Gata1.png")
-carImg2 = pygame.image.load("bubbla.png")
-carImg3 = pygame.image.load("audi.png")
-carImg4 = pygame.image.load("honda.png")
-carImg5 = pygame.image.load("konig.png")
+carImg = pygame.image.load('Bilder/s90.png')
+Gata1 = pygame.image.load("Bilder/Gata1.png")
+carImg2 = pygame.image.load("Bilder/bubbla.png")
+carImg3 = pygame.image.load("Bilder/audi.png")
+carImg4 = pygame.image.load("Bilder/honda.png")
+carImg5 = pygame.image.load("Bilder/konig.png")
 
 carImgList = [carImg3, carImg4, carImg5]
 
@@ -69,11 +67,10 @@ def things_dodged(count):
     #pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
     
 def dodcars(thingx,thingy,carImgList):
-        gameDisplay.blit(random.choice(carImgList), (thingx,thingy))
-
+    gameDisplay.blit((carImg3), (thingx,thingy))
 
 #bilens plats
-def car(x,y):
+def display_car(x,y):
     gameDisplay.blit(carImg,(x,y))
 
 #You crashed text
@@ -166,7 +163,7 @@ def game_intro():
                 pygame.quit()
                 quit()
 
-        gameDisplay.fill(white)
+        gameDisplay.fill(black)
         largeText = pygame.font.Font('freesansbold.ttf',115)
         TextSurf, TextRect = text_objects("Spel", largeText)
         TextRect.center = ((display_width/2),(display_height/2))
@@ -198,7 +195,6 @@ def game_loop():
     dodged = 0
 
     gameExit = False
-    dodcars = False
 
     ypos = 0 
 
@@ -232,25 +228,29 @@ def game_loop():
         if rel_ypos < display_height:
             gameDisplay.blit(Gata1, (0, rel_ypos))
         ypos += thing_speed + 1
-
-        # Saker
-        #things(thing_startx, thing_starty, car_width, car_height, black)
-        dodcars(thing_startx, thing_starty, carImgList)
         
 
+        
+        # Saker
+        #things(thing_startx, thing_starty, car_width, car_height, black)
+    
+        dodcars(thing_startx, thing_starty, carImg3)
+    
+    
+
         thing_starty += thing_speed
-        car(x,y)   
+        display_car(x,y)   
         things_dodged(dodged)
         
 
         # Banans gränser
-        if x > display_width - car_width or x < 0:
+        if x > 565 or x < 165:
             crash()
         
 
         if thing_starty > display_height:
             thing_starty = 0 - car_height
-            thing_startx = random.randrange(0,display_width)
+            thing_startx = random.randrange(165,565)
             dodged += 1
             thing_speed += 0.7
 
@@ -260,7 +260,7 @@ def game_loop():
                 crash()
 
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(60)
 
 game_intro()
 game_loop()
