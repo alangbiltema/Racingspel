@@ -59,14 +59,8 @@ def things_dodged(count):
     font = pygame.font.SysFont(None, 25)
     text = font.render("Dodged: "+str(count), True, black)
     gameDisplay.blit(text,(10,10))
-
-
-
-#Block att dodgea
-#def things(thingx,thingy,thingw,thingh,color):
-    #pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
     
-def dodcars(thingx,thingy,carImgList):
+def dodge_cars(thingx,thingy,carImgList):
     gameDisplay.blit((carImg3), (thingx,thingy))
 
 #bilens plats
@@ -144,8 +138,6 @@ def paused():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
-        #gameDisplay.fill(white)
     
         button("CONTINUE",150,450,100,50,green,bright_green,unpause)
         button("QUIT",550,450,100,50,red,bright_red,quitgame)
@@ -175,8 +167,6 @@ def game_intro():
         pygame.display.update()
         clock.tick(15)
 
-
-
 #Gamemechanics
 def game_loop():
     global pause
@@ -186,7 +176,7 @@ def game_loop():
 
     x_change = 0
 
-    thing_startx = random.randrange(0 + car_width, display_width - car_width)
+    thing_startx = random.randrange(0 + 165, display_width - car_width)
     thing_starty = -600
     thing_speed = 4
     thing_width = 100
@@ -229,15 +219,10 @@ def game_loop():
             gameDisplay.blit(Gata1, (0, rel_ypos))
         ypos += thing_speed + 1
         
-
         
-        # Saker
-        #things(thing_startx, thing_starty, car_width, car_height, black)
+        # Saker    
+        dodge_cars(thing_startx, thing_starty, carImg3)
     
-        dodcars(thing_startx, thing_starty, carImg3)
-    
-    
-
         thing_starty += thing_speed
         display_car(x,y)   
         things_dodged(dodged)
