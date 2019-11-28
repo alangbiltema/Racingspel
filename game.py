@@ -1,11 +1,4 @@
-# Saker att fixa
-# Scrollande olika bakgrund
-# En highscore lista
-# Bättre styrmechanics
-# Bensinmätare 
-# bilar i motg[ende riktning
 import pygame, time, random
-
 
 pygame.init()
 pygame.mixer.init()
@@ -19,6 +12,7 @@ display_height = 600
 
 #Färger
 black = (0,0,0)
+gray = (66,66,66)
 white = (255,255,255)
 red = (200, 0, 0)
 bright_red = (255, 0, 0)
@@ -26,7 +20,7 @@ green = (0, 200, 0)
 bright_green = (0, 255, 0)
 blue = (0, 0, 255)
 
-car_height = 130
+car_height = 158
 car_width = 60
 
 #Spelfönsternamnochklocka
@@ -36,18 +30,20 @@ pygame.display.set_caption('s90.png')
 clock = pygame.time.Clock()
 
 #Bilder
-carImg = pygame.image.load('Bilder/s90.png')
+#carImg = pygame.image.load('Bilder/s90.png')
+carImg = pygame.image.load('Bilder/cybertrucksmall.png')
+startImg = pygame.image.load('Bilder/Teslacyber.png')
 Gata1 = pygame.image.load("Bilder/Gata1.png")
 carImg2 = pygame.image.load("Bilder/bubbla.png")
 carImg3 = pygame.image.load("Bilder/audi.png")
 carImg4 = pygame.image.load("Bilder/honda.png")
 carImg5 = pygame.image.load("Bilder/konig.png")
 
-carImgList = [carImg3, carImg4, carImg5]
+#carImgList = [carImg3, carImg4, carImg5]
 
 pygame.display.set_icon(carImg2)
 
-background = None
+#background = None
 
 #pausemeny variabel
 pause = False
@@ -57,7 +53,7 @@ pause = False
 #Score counter
 def things_dodged(count):
     font = pygame.font.SysFont(None, 25)
-    text = font.render("Dodged: "+str(count), True, black)
+    text = font.render("Dodged: "+str(count), True, white)
     gameDisplay.blit(text,(10,10))
     
 def dodge_cars(thingx,thingy,carImgList):
@@ -67,9 +63,15 @@ def dodge_cars(thingx,thingy,carImgList):
 def display_car(x,y):
     gameDisplay.blit(carImg,(x,y))
 
-#You crashed text
-def text_objects(text, font):
+#Textobjects
+def text_objectswhite(text, font):
     TextSurface = font.render(text, True, white)
+    return TextSurface, TextSurface.get_rect()
+def text_objectsblack(text, font):
+    TextSurface = font.render(text, True, black)
+    return TextSurface, TextSurface.get_rect()
+def text_objectsgray(text, font):
+    TextSurface = font.render(text, True, gray)
     return TextSurface, TextSurface.get_rect()
 
 def crash():
@@ -80,7 +82,7 @@ def crash():
 
     crash = True
     largeText = pygame.font.Font('freesansbold.ttf',115)
-    TextSurf, TextRect = text_objects("You Crashed!", largeText)
+    TextSurf, TextRect = text_objectswhite("You Crashed!", largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
 
@@ -111,7 +113,7 @@ def button(msg,x,y,w,h,ic,ac,action=None):
              pygame.draw.rect(gameDisplay, ic, (x,y,w,h))
 
         smallText = pygame.font.Font("freesansbold.ttf",20)
-        TextSurf, TextRect = text_objects(msg, smallText)
+        TextSurf, TextRect = text_objectswhite(msg, smallText)
         TextRect.center = ( (x+(w/2)), (y+(h/2)) )
         gameDisplay.blit(TextSurf, TextRect)
 
@@ -129,7 +131,7 @@ def paused():
     pygame.mixer.music.pause()
 
     largeText = pygame.font.Font('freesansbold.ttf',115)
-    TextSurf, TextRect = text_objects("PAUSED", largeText)
+    TextSurf, TextRect = text_objectswhite("PAUSED", largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
 
@@ -148,7 +150,6 @@ def paused():
 #startmeny
 def game_intro():
     intro = True
-
     while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -156,8 +157,10 @@ def game_intro():
                 quit()
 
         gameDisplay.fill(black)
+        gameDisplay.blit(startImg, (0,0))
+
         largeText = pygame.font.Font('freesansbold.ttf',115)
-        TextSurf, TextRect = text_objects("Spel", largeText)
+        TextSurf, TextRect = text_objectsgray("DODGE CARS", largeText)
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
 
@@ -176,7 +179,7 @@ def game_loop():
 
     x_change = 0
 
-    thing_startx = random.randrange(0 + 165, display_width - car_width)
+    thing_startx = random.randrange(0 + 165, display_width - 235)
     thing_starty = -600
     thing_speed = 4
     thing_width = 100
