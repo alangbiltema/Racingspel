@@ -40,6 +40,7 @@ carImg4 = pygame.image.load("Bilder/honda.png")
 carImg5 = pygame.image.load("Bilder/konig.png")
 
 carImgList = [carImg3, carImg4, carImg5]
+carImgBlit = random.choice(carImgList)
 
 pygame.display.set_icon(carImg2)
 
@@ -57,10 +58,8 @@ def things_dodged(count):
     gameDisplay.blit(text,(10,10))
     
 def dodge_cars(thingx,thingy,carImgList):
-    gameDisplay.blit(random.choice(carImgList), (thingx,thingy))
-    time.sleep(1)    
-
-
+    gameDisplay.blit((carImgBlit), (thingx,thingy))
+    
 #bilens plats
 def display_car(x,y):
     gameDisplay.blit(carImg,(x,y))
@@ -194,7 +193,7 @@ def game_loop():
     ypos = 0 
 
     while not gameExit:
-
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -226,7 +225,7 @@ def game_loop():
         
         
         # Saker
-        dodge_cars(thing_startx, thing_starty, carImgList)
+        dodge_cars(thing_startx, thing_starty, carImg)
     
         thing_starty += thing_speed
         display_car(x,y)   
